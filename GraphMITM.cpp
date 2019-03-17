@@ -101,9 +101,10 @@ unsigned long long int GraphMITM::clique_find(){
 	int i;
 	int size = graphSize;
 	if (graphSize % 2 != 0){
-		size = graphSize + 1;
+		graphSize++;
+		size = graphSize;
 		for (i = 0; i < graphBitCode.size(); i++){
-			graphBitCode[i] = graphBitCode[i] << 1;
+			graphBitCode[i] = graphBitCode[i] << 1ULL;
 		}
 		graphBitCode.push_back(0ULL);
 	}
@@ -135,7 +136,7 @@ unsigned long long int GraphMITM::clique_find(){
 	CliqueInfo empty_A = {0, 0, (1ULL << (size)) - 1ULL, ((1ULL << (med)) - 1ULL) };
 	CliqueInfo empty_B = {0, 0, (1ULL << (size)) - 1ULL, ((1ULL << med) - 1ULL) << (graphSize - med)};
 	cliques_A.push_back(empty_A);
-	check(mask, med, 0, 0ULL, 'A', 0, 1ULL << (size - 1));
+	check(mask, med, 0, 0ULL, 'A', 0, 1ULL << (size - 1ULL));
 	cliques_B.push_back(empty_B);
 	check(mask, med, 0, 0ULL, 'B', med, 1ULL << (med - 1ULL));
 	
@@ -159,7 +160,7 @@ unsigned long long int GraphMITM::clique_find(){
 		vertexes(cliques_A[i].all, size);
 	}
 	*/
-	
+
     for (i = 0; i < cliques_A.size(); i++){
     	if (cliques_A[i].size > max_clique_size){
     		max_clique_size = cliques_A[i].size;
@@ -195,10 +196,11 @@ unsigned long long int GraphMITM::clique_find(){
 	// Отменим временные изменения, которые пришлось сделать 
 
 	if (graphSize % 2 != 0){
-		for (i = 0; i < graphBitCode.size(); i++){
+		for (i = 0; i < graphBitCode.size() - 1; i++){
 			graphBitCode[i] = graphBitCode[i] >> 1;
 		}
 		graphBitCode.pop_back();
+		graphSize--;
 	}
     return res;
 }

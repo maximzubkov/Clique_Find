@@ -116,17 +116,19 @@ std::vector< std::vector<int> > get_graph_from_file(std::string dir){
 // /Users/MaximZubkov/Desktop/Math/AMC/bonus/bonus/graph.txt это я для себя 
 
 int main(int argc, char * argv[]) {
+    int k = 5;
     std::vector< std::vector<int> > matrix = get_graph_from_file(argv[1]);
     clock_t start_time =  std::clock();
     GraphMITM graph(matrix.size(), matrix);
     clock_t end_time =  std::clock();
-    std::cout << (end_time - start_time)/ (double) CLOCKS_PER_SEC << "\n";
-    std::cout <<"Has clique: "<< graph.HasClique(5) << "\n";
-    std::cout <<"Max clique size: "<< graph.GetMaxCliqueSize() << "\n";
+    std::cout << "time: " << (end_time - start_time)/ (double) CLOCKS_PER_SEC << "\n";
+    std::cout << "Has clique size " << k << ": "<< graph.HasClique(k) << "\n";
+    std::cout << "Max clique size: " << graph.GetMaxCliqueSize() << "\n";
     std::vector<int> v = graph.GetMaxClique();
+    std::cout << "Vertexes in max clique: ";
     for (int i = 0; i < v.size(); i++){
         std::cout << v[i] << " ";
     }
-    std::cout << "ппщщ\n";
+    std::cout << "\n";
     return 0;
 }
