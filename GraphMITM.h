@@ -11,7 +11,7 @@ class GraphMITM: public Graph::Graph
 {
 public:
 	GraphMITM(std::size_t n_vertex, std::vector< std::vector<int> >& matrix);
-    // Метод возвращает true, если в графе действительно есть клика размера заданного размера size
+    // Метод возвращает true, если в графе есть клика размера заданного размера size 
     bool HasClique(std::size_t size);
     // Метод возвращает размер максимальной клики для графа
     std::size_t GetMaxCliqueSize();

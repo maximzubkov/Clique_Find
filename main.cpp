@@ -113,7 +113,7 @@ std::vector< std::vector<int> > get_graph_from_file(std::string dir){
     return res;
 }
 
-// /Users/MaximZubkov/Desktop/Math/AMC/bonus/bonus/graph.txt
+// /Users/MaximZubkov/Desktop/Math/AMC/bonus/bonus/graph.txt это я для себя 
 
 int main(int argc, char * argv[]) {
     std::vector< std::vector<int> > matrix = get_graph_from_file(argv[1]);

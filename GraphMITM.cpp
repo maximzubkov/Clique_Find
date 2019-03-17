@@ -22,7 +22,7 @@ GraphMITM::GraphMITM(std::size_t n_vertex,  std::vector< std::vector<int> >& mat
 
 }
 
-// Метод возвращает true, если в графе действительно есть клика размера заданного размера
+// Метод возвращает true, если в графе действительно есть клика размера заданного размера size
 bool GraphMITM::HasClique(std::size_t size){
 	if(max_clique_size >= size){
 		return true;
