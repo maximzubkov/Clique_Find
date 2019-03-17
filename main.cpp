@@ -121,7 +121,7 @@ int main(int argc, char * argv[]) {
     GraphMITM graph(matrix.size(), matrix);
     clock_t end_time =  std::clock();
     std::cout << (end_time - start_time)/ (double) CLOCKS_PER_SEC << "\n";
-    std::cout <<"Has clique: "<< graph.HasClique() << "\n";
+    std::cout <<"Has clique: "<< graph.HasClique(5) << "\n";
     std::cout <<"Max clique size: "<< graph.GetMaxCliqueSize() << "\n";
     std::vector<int> v = graph.GetMaxClique();
     for (int i = 0; i < v.size(); i++){
