@@ -84,13 +84,16 @@
 
 #include "GraphMITM.h"
 #include <fstream>
+#include <cstdint>
 #include <string>
 #include <sstream>
 
 std::vector< std::vector<int> > get_graph_from_file(std::string dir){
+    // Открывает файл graph.txt, преобразует данные из него в матрицу инцедентности 
     std::ifstream in;
     in.open(dir);
     if (!in.is_open()){
+        std::cout << "invalid file";
         exit(0);
     }
     std::string line;
@@ -110,10 +113,20 @@ std::vector< std::vector<int> > get_graph_from_file(std::string dir){
     return res;
 }
 
+// /Users/MaximZubkov/Desktop/Math/AMC/bonus/bonus/graph.txt
 
-int main() {
-    std::vector< std::vector<int> > matrix = get_graph_from_file("/Users/MaximZubkov/Desktop/Math/AMC/bonus/bonus/graph.txt");
+int main(int argc, char * argv[]) {
+    std::vector< std::vector<int> > matrix = get_graph_from_file(argv[1]);
+    clock_t start_time =  std::clock();
     GraphMITM graph(matrix.size(), matrix);
-    std::cout << "ппщщ";
+    clock_t end_time =  std::clock();
+    std::cout << (end_time - start_time)/ (double) CLOCKS_PER_SEC << "\n";
+    std::cout <<"Has clique: "<< graph.HasClique() << "\n";
+    std::cout <<"Max clique size: "<< graph.GetMaxCliqueSize() << "\n";
+    std::vector<int> v = graph.GetMaxClique();
+    for (int i = 0; i < v.size(); i++){
+        std::cout << v[i] << " ";
+    }
+    std::cout << "ппщщ\n";
     return 0;
 }

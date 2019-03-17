@@ -14,11 +14,21 @@ GraphMITM::GraphMITM(std::size_t n_vertex,  std::vector< std::vector<int> >& mat
 	Graph::Graph(n_vertex, matrix) 
 {
 	std::cout << "GraphMITM \n" << endl;
-	max_clique_size = 0;
 	max_clique = clique_find();
-	std::cout << "ans: ";
+	max_clique_size = 0;
+	std::cout << "ans: " << max_clique;
 	vertexes(max_clique, graphSize);
-	std::cout << "size: "<<max_clique_size << "\n";
+	int i = 0;
+	/*
+	unsigned long long int tmp = max_clique;
+	while (tmp > 0){
+		if ((max_clique & 1ULL) == 1ULL){
+			max_clique_size++;
+		}
+		i++;
+		tmp = tmp >> 1;
+	} */
+	std::cout << max_clique_size;
 
 }
 
@@ -38,13 +48,12 @@ std::size_t GraphMITM::GetMaxCliqueSize(){
 std::vector<int> GraphMITM::GetMaxClique(){
 	std::vector <int> v;
 	int i = 0;
-	unsigned long long int tmp = max_clique;
+	int tmp = max_clique;
 	while(tmp > 0){
-		v.insert(v.begin(),(tmp & 1ULL));
+		v.insert(v.begin(),(max_clique & 1ULL));
 		i++;
-		tmp = tmp >> 1ULL;
+		tmp = tmp >> 1;
 	}
-	v.insert(v.begin(),(tmp & 1ULL));
 	return v;
 
 }

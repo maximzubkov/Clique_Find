@@ -11,11 +11,19 @@ class GraphMITM: public Graph::Graph
 {
 public:
 	GraphMITM(std::size_t n_vertex, std::vector< std::vector<int> >& matrix);
-	void check(int mask, int size, int in_clique, int cli, char set, int current, int current_binary);
-	int clique_find();
+    // Метод возвращает true, если в графе действительно есть клика размера заданного размера
+    bool HasClique();
+    // Метод возвращает размер максимальной клики для графа
+    std::size_t GetMaxCliqueSize();
+    // Метод возвращает вершины максимальной клики
+    std::vector<int> GetMaxClique();
+	void check(unsigned long long int mask, int size, int in_clique, 
+			   unsigned long long int cli, char set, int current, 
+			   unsigned long long int current_binary);
+	unsigned long long int clique_find();
 	std::vector< CliqueInfo > cliques_A;
 	std::vector< CliqueInfo > cliques_B;
-	int max_clique;
+	unsigned long long int max_clique;
 	int max_clique_size;
 };
 
