@@ -53,10 +53,10 @@ void GraphMITM::check(unsigned long long int mask, int size, int in_clique, unsi
 	// Перебирает рекурсивно все подмножества X вершин множества A (B) и доавляет в массив clique_A (clique_B) только такие X,
 	// все вершины в которого соединины между собой
 	if (set == 'A' && (in_clique >= 1ULL)){
-		CliqueInfo tmp = {cli, in_clique, mask, (mask & ((1ULL << (graphSize - size)) - 1ULL)) + cli};
+		CliqueInfo tmp = {cli, in_clique, mask, (mask & ((1ULL << (size)) - 1ULL)) + cli};
 		cliques_A.push_back(tmp);
 		//print('A', in_clique, tmp.clique, tmp.all, graphSize);
-		if ((mask & (((1 << size) - 1ULL) << (graphSize - size))) == 0ULL){
+		if ((mask & (((1 << size) - 1ULL) << (size))) == 0ULL){
 			return;
 		}
 	} 
@@ -95,11 +95,20 @@ void GraphMITM::check(unsigned long long int mask, int size, int in_clique, unsi
 unsigned long long int GraphMITM::clique_find(){
 	unsigned long long int res;
 
-	// Разобъем множество вершин на два множества A и B равной
-	// (или почти равной в случае нечетного числа вершин)
-	// мощности
+	// Разобъем множество вершин посередине на два множества A и B равной мощности (в случае нечетного числа вершин 
+	// просто добавим нулевую строку и нулевой столбец в матрицу инцедентности)
 
-	int i, med = graphSize >> 1;
+	int i;
+	int size = graphSize;
+	if (graphSize % 2 != 0){
+		size = graphSize + 1;
+		for (i = 0; i < graphBitCode.size(); i++){
+			graphBitCode[i] = graphBitCode[i] << 1;
+		}
+		graphBitCode.push_back(0ULL);
+	}
+	int med = size >> 1;
+
 
 
 	// Затем для каждого из множеств найдем все клики. 
@@ -121,14 +130,14 @@ unsigned long long int GraphMITM::clique_find(){
 	// (последние graphSize - med битов mask_A) + cli_A; а для множества B: all_B = (первые med битов mask_B) + cli_B.
 	// Стоить заметить, что для каждой клики значение параметра all уникальное
 
-	unsigned long long int mask = (1ULL << graphSize) - 1ULL; // Задаем маску из единичек
+	unsigned long long int mask = (1ULL << size) - 1ULL; // Задаем маску из единичек
 	// В каждом из множеств A и B должно быть пустое множество в качестве клики
-	CliqueInfo empty_A = {0, 0, (1ULL << (graphSize)) - 1ULL, ((1ULL << (graphSize - med)) - 1ULL) };
-	CliqueInfo empty_B = {0, 0, (1ULL << (graphSize)) - 1ULL, ((1ULL << med) - 1ULL) << (graphSize - med)};
+	CliqueInfo empty_A = {0, 0, (1ULL << (size)) - 1ULL, ((1ULL << (med)) - 1ULL) };
+	CliqueInfo empty_B = {0, 0, (1ULL << (size)) - 1ULL, ((1ULL << med) - 1ULL) << (graphSize - med)};
 	cliques_A.push_back(empty_A);
-	check(mask, med, 0, 0ULL, 'A', 0, 1ULL << (graphSize - 1));
+	check(mask, med, 0, 0ULL, 'A', 0, 1ULL << (size - 1));
 	cliques_B.push_back(empty_B);
-	check(mask, graphSize - med, 0, 0ULL, 'B', med, 1ULL << (graphSize - med - 1ULL));
+	check(mask, med, 0, 0ULL, 'B', med, 1ULL << (med - 1ULL));
 	
 	// Теперь надо узнать для каждой клики графа A такие клики графа B,  
 	// что их объединение также является кликой. Для одной клики K графа A может быть 
@@ -141,13 +150,23 @@ unsigned long long int GraphMITM::clique_find(){
 
 	// Для начала пройдем по всем кликам из clique_A выберем среди них максимальную, выберем ее как начало для бинарного поиска
 
+	/*
+	for (i = 0; i < cliques_B.size(); i++){
+		vertexes(cliques_B[i].all, size);
+	}
+
+	for (i = 0; i < cliques_A.size(); i++){
+		vertexes(cliques_A[i].all, size);
+	}
+	*/
+	
     for (i = 0; i < cliques_A.size(); i++){
     	if (cliques_A[i].size > max_clique_size){
     		max_clique_size = cliques_A[i].size;
             res = cliques_A[i].clique;
     	}
     }
-
+    std::cout << "\n";
 	// Бинарный поиск 
 
     int left = 0;
@@ -173,5 +192,13 @@ unsigned long long int GraphMITM::clique_find(){
     	}
 	}
 
+	// Отменим временные изменения, которые пришлось сделать 
+
+	if (graphSize % 2 != 0){
+		for (i = 0; i < graphBitCode.size(); i++){
+			graphBitCode[i] = graphBitCode[i] >> 1;
+		}
+		graphBitCode.pop_back();
+	}
     return res;
 }
