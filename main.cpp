@@ -83,6 +83,7 @@
 */
 
 #include "GraphMITM.h"
+#include "GraphBRAB.h"
 #include <fstream>
 #include <cstdint>
 #include <string>
@@ -119,16 +120,22 @@ int main(int argc, char * argv[]) {
     int k = 5;
     std::vector< std::vector<int> > matrix = get_graph_from_file(argv[1]);
     clock_t start_time =  std::clock();
-    GraphMITM graph(matrix.size(), matrix);
+    GraphBRAB graphBRAB(matrix.size(), matrix);
     clock_t end_time =  std::clock();
-    std::cout << "time: " << (end_time - start_time)/ (double) CLOCKS_PER_SEC << "\n";
-    std::cout << "Has clique size " << k << ": "<< graph.HasClique(k) << "\n";
-    std::cout << "Max clique size: " << graph.GetMaxCliqueSize() << "\n";
-    std::vector<int> v = graph.GetMaxClique();
-    std::cout << "Vertexes in max clique: ";
-    for (int i = 0; i < v.size(); i++){
-        std::cout << v[i] << " ";
-    }
-    std::cout << "\n";
+    std::cout << "timeBRAB: " << (end_time - start_time)/ (double) CLOCKS_PER_SEC << "\n";
+    start_time =  std::clock();
+    GraphMITM graphMITM(matrix.size(), matrix);
+    end_time =  std::clock();
+    std::cout << "timeMITM: " << (end_time - start_time)/ (double) CLOCKS_PER_SEC << "\n";
+    // clock_t end_time =  std::clock();
+    // std::cout << "time: " << (end_time - start_time)/ (double) CLOCKS_PER_SEC << "\n";
+    // std::cout << "Has clique size " << k << ": "<< graph.HasClique(k) << "\n";
+    // std::cout << "Max clique size: " << graph.GetMaxCliqueSize() << "\n";
+    // std::vector<int> v = graph.GetMaxClique();
+    // std::cout << "Vertexes in max clique: ";
+    // for (int i = 0; i < v.size(); i++){
+    //     std::cout << v[i] << " ";
+    // }
+    // std::cout << "\n"; 
     return 0;
 }

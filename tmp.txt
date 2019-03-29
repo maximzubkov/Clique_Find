@@ -1,0 +1,19 @@
+Graph object being created with max nodes size:49
+
+GraphBRAB 
+
+ans: (41 29 19 16 10 2 )
+size: 6
+timeBRAB: 0.00022
+Graph object being created with max nodes size:49
+
+GraphMITM 
+
+
+ans: (41 29 19 16 10 2 )
+size: 6
+timeMITM: 0.000134
+Graph distroed
+
+Graph distroed
+

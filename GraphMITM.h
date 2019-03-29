@@ -17,13 +17,13 @@ public:
     std::size_t GetMaxCliqueSize();
     // Метод возвращает вершины максимальной клики
     std::vector<int> GetMaxClique();
-	void check(unsigned long long int mask, int size, int in_clique, 
-			   unsigned long long int cli, char set, int current, 
-			   unsigned long long int current_binary);
-	unsigned long long int clique_find();
+	void check(uint64_t mask, int size, int in_clique, 
+			   uint64_t cli, char set, int current, 
+			   uint64_t current_binary);
+	uint64_t clique_find();
 	std::vector< CliqueInfo > cliques_A;
 	std::vector< CliqueInfo > cliques_B;
-	unsigned long long int max_clique;
+	uint64_t max_clique;
 	int max_clique_size;
 };
 

@@ -38,7 +38,7 @@ std::size_t GraphMITM::GetMaxCliqueSize(){
 std::vector<int> GraphMITM::GetMaxClique(){
 	std::vector <int> v;
 	int i = 0;
-	unsigned long long int tmp = max_clique;
+	uint64_t tmp = max_clique;
 	while(tmp > 0){
 		v.insert(v.begin(),(tmp & 1ULL));
 		i++;
@@ -49,7 +49,7 @@ std::vector<int> GraphMITM::GetMaxClique(){
 
 }
 
-void GraphMITM::check(unsigned long long int mask, int size, int in_clique, unsigned long long int cli, char set, int current, unsigned long long int current_binary){
+void GraphMITM::check(uint64_t mask, int size, int in_clique, uint64_t cli, char set, int current, uint64_t current_binary){
 	// Перебирает рекурсивно все подмножества X вершин множества A (B) и доавляет в массив clique_A (clique_B) только такие X,
 	// все вершины в которого соединины между собой
 	if (set == 'A' && (in_clique >= 1ULL)){
@@ -70,7 +70,7 @@ void GraphMITM::check(unsigned long long int mask, int size, int in_clique, unsi
 	}
 	// maximum - ограничене, которое не позволяет брать биты, не входящее во множество A (или B)
 	// на каждом шаге рассматриваем j-тый бит, то i = 2^j 
-	unsigned long long int i = current_binary;
+	uint64_t i = current_binary;
 	int maximum;
 	int j = current;
 	if (set == 'A'){
@@ -92,8 +92,8 @@ void GraphMITM::check(unsigned long long int mask, int size, int in_clique, unsi
 	return;
 }
 
-unsigned long long int GraphMITM::clique_find(){
-	unsigned long long int res;
+uint64_t GraphMITM::clique_find(){
+	uint64_t res;
 
 	// Разобъем множество вершин посередине на два множества A и B равной мощности (в случае нечетного числа вершин 
 	// просто добавим нулевую строку и нулевой столбец в матрицу инцедентности)
@@ -131,7 +131,7 @@ unsigned long long int GraphMITM::clique_find(){
 	// (последние graphSize - med битов mask_A) + cli_A; а для множества B: all_B = (первые med битов mask_B) + cli_B.
 	// Стоить заметить, что для каждой клики значение параметра all уникальное
 
-	unsigned long long int mask = (1ULL << size) - 1ULL; // Задаем маску из единичек
+	uint64_t mask = (1ULL << size) - 1ULL; // Задаем маску из единичек
 	// В каждом из множеств A и B должно быть пустое множество в качестве клики
 	CliqueInfo empty_A = {0, 0, (1ULL << (size)) - 1ULL, ((1ULL << (med)) - 1ULL) };
 	CliqueInfo empty_B = {0, 0, (1ULL << (size)) - 1ULL, ((1ULL << med) - 1ULL) << (graphSize - med)};
