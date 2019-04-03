@@ -1,5 +1,4 @@
-#ifndef __GRAPHMITM_H__
-#define __GRAPHMITM_H__
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -17,14 +16,15 @@ public:
     std::size_t GetMaxCliqueSize();
     // Метод возвращает вершины максимальной клики
     std::vector<int> GetMaxClique();
+private:
 	void check(uint64_t mask, int size, int in_clique, 
 			   uint64_t cli, char set, int current, 
 			   uint64_t current_binary);
-	uint64_t clique_find();
+	CliqueInfo clique_find();
 	std::vector< CliqueInfo > cliques_A;
 	std::vector< CliqueInfo > cliques_B;
-	uint64_t max_clique;
+	CliqueInfo max_clique;
 	int max_clique_size;
 };
 
-#endif
+

@@ -1,5 +1,4 @@
-#ifndef __GRAPHBRAB_H__
-#define __GRAPHBRAB_H__
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -26,4 +25,3 @@ private:
 	int max_clique_size;
 };
 
-#endif

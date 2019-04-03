@@ -5,6 +5,7 @@
 using namespace std;
 #include "GraphBRAB.h"
 #include "BeautifulPrint.h"
+// using namespace Logger;
 #include "Graph.h"
 
 GraphBRAB::GraphBRAB(std::size_t n_vertex, std::vector< std::vector<int> >& matrix):
@@ -14,9 +15,9 @@ GraphBRAB::GraphBRAB(std::size_t n_vertex, std::vector< std::vector<int> >& matr
 	max_clique_size = 0;
 	compsub = 0ULL;
 	max_clique = 0ULL;
-	clique_find((1ULL << graphSize) - 1ULL, 0ULL);
+	clique_find((1ULL << this->size()) - 1ULL, 0ULL);
 	std::cout << "ans: ";
-	vertexes(max_clique, graphSize);
+	Logger::vertexes(std::cout, max_clique, this->size());
 	std::cout << "size: " << max_clique_size << "\n";
 
 }
@@ -49,13 +50,13 @@ std::vector<int> GraphBRAB::GetMaxClique(){
 
 bool GraphBRAB::check(uint64_t candidates, uint64_t forbidden){
 	// Проверяет, содержит ли forbidden вершины, соединенные со всеми вершиными candidates
-	int i;
-	for (i = 0; i < graphSize; i++){
+	std::vector<uint64_t> bit_code = this->getBiteCodes();
+	for (int i = 0; i < this->size(); i++){
 		if ((1ULL & (forbidden >> i)) == 1ULL){
 			// Если нашлась такая вершина, которая соединена со всеми из candidates, то их побитовое 
 			// "и" даст как раз таки ровно candidates, при поитовое "и" обладает таким свойством, что 
 			// оно ограничено сверху candidates
-			if ((candidates & graphBitCode[i]) == candidates){
+			if ((candidates & bit_code[i]) == candidates){
 				return true;
 			}
 		}
@@ -67,7 +68,7 @@ int GraphBRAB::number_of_vertexes(uint64_t v){
 	int i = 0;
 	uint64_t tmp = 1ULL;
 	int num = 0;
-	while(i < graphSize){
+	while(i < this->size()){
 		if ((v & tmp) != 0ULL){
 			num++;
 		}
@@ -79,21 +80,21 @@ int GraphBRAB::number_of_vertexes(uint64_t v){
 
 // void GraphBRAB::pr(uint64_t candidates, uint64_t forbidden){
 // 	std::cout << "candi: \n";
-// 	vertexes(candidates, graphSize);
+// 	vertexes(candidates, this->size());
 // 	std::cout << "forb: \n";
-// 	vertexes(forbidden, graphSize);
+// 	vertexes(forbidden, this->size());
 // 	std::cout << "compsub: \n";
-// 	vertexes(compsub, graphSize);
+// 	vertexes(compsub, this->size());
 // 	std::cout << "\n";
 // }
 void GraphBRAB::clique_find(uint64_t candidates, uint64_t forbidden){
-	uint64_t v = (1ULL << (graphSize - 1));
+	uint64_t v = (1ULL << (this->size() - 1));
+	std::vector<uint64_t> bit_code = this->getBiteCodes();
 	int i = 0;
 	uint64_t new_candidates;
 	uint64_t new_forbidden;
 	while (candidates != 0ULL && (check(candidates, forbidden) == false)){
-
-		while(i < graphSize){
+		while(i < this->size()){
 			if ((v & candidates) != 0ULL){
 				break;
 			}
@@ -101,8 +102,8 @@ void GraphBRAB::clique_find(uint64_t candidates, uint64_t forbidden){
 			i++;
 		}
 		compsub = compsub ^ v;
-		new_candidates = candidates & graphBitCode[i];
-		new_forbidden = forbidden & graphBitCode[i];
+		new_candidates = candidates & bit_code[i];
+		new_forbidden = forbidden & bit_code[i];
 		if (new_candidates == 0ULL && new_forbidden == 0ULL){
 			if (number_of_vertexes(max_clique) < number_of_vertexes(compsub)){
 				max_clique = compsub;
@@ -115,7 +116,7 @@ void GraphBRAB::clique_find(uint64_t candidates, uint64_t forbidden){
 		compsub = compsub ^ v;
 		forbidden = forbidden | v;
 		i = 0;
-		v = (1ULL << (graphSize - 1));
+		v = (1ULL << (this->size() - 1));
 	}
 	return ;
 }

@@ -84,13 +84,17 @@
 
 #include "GraphMITM.h"
 #include "GraphBRAB.h"
+// #include "BeautifulPrint.h"
+#include "CliqueInfo.h" 
 #include <fstream>
 #include <cstdint>
 #include <string>
 #include <sstream>
+#include <chrono>
+// using namespace Logger;
 
 std::vector< std::vector<int> > get_graph_from_file(std::string dir){
-    // Открывает файл graph.txt, преобразует данные из него в матрицу инцедентности 
+    // Открывает файл graph.txt, преобразует данные из него в матрицу инцедентности
     std::ifstream in;
     in.open(dir);
     if (!in.is_open()){
@@ -103,20 +107,22 @@ std::vector< std::vector<int> > get_graph_from_file(std::string dir){
     std::vector < std::vector <int> > res;
 
     while(std::getline(in, line)){
-        std::istringstream ist(line);            
+        std::istringstream ist(line);
         while (ist >> tmp_str){
-            tmp_vect.push_back(std::stoi(tmp_str));            
+            tmp_vect.push_back(std::stoi(tmp_str));
         }
-        res.push_back(tmp_vect);           
+        res.push_back(tmp_vect);
         tmp_vect.clear();
     }
     in.close();
     return res;
 }
 
-// /Users/MaximZubkov/Desktop/Math/AMC/bonus/bonus/graph.txt это я для себя 
+
+// /Users/MaximZubkov/Desktop/Math/AMC/bonus/bonus/graph.txt это я для себя
 
 int main(int argc, char * argv[]) {
+
     int k = 5;
     std::vector< std::vector<int> > matrix = get_graph_from_file(argv[1]);
     clock_t start_time =  std::clock();
@@ -127,15 +133,14 @@ int main(int argc, char * argv[]) {
     GraphMITM graphMITM(matrix.size(), matrix);
     end_time =  std::clock();
     std::cout << "timeMITM: " << (end_time - start_time)/ (double) CLOCKS_PER_SEC << "\n";
-    // clock_t end_time =  std::clock();
-    // std::cout << "time: " << (end_time - start_time)/ (double) CLOCKS_PER_SEC << "\n";
-    // std::cout << "Has clique size " << k << ": "<< graph.HasClique(k) << "\n";
-    // std::cout << "Max clique size: " << graph.GetMaxCliqueSize() << "\n";
-    // std::vector<int> v = graph.GetMaxClique();
-    // std::cout << "Vertexes in max clique: ";
-    // for (int i = 0; i < v.size(); i++){
-    //     std::cout << v[i] << " ";
-    // }
-    // std::cout << "\n"; 
+    std::cout << "time: " << (end_time - start_time) / (double) CLOCKS_PER_SEC << "\n";
+    std::cout << "Has clique size " << k << ": "<< graphMITM.HasClique(k) << "\n";
+    std::cout << "Max clique size: " << graphMITM.GetMaxCliqueSize() << "\n";
+    std::vector<int> v = graphMITM.GetMaxClique();
+    std::cout << "Vertexes in max clique: ";
+    for (int i = 0; i < v.size(); i++){
+        std::cout << v[i] << " ";
+    }
+    std::cout << "\n";
     return 0;
 }
